@@ -39,13 +39,16 @@ export async function deleteRiddle(req, res) {
 }
 
 export async function updateRiddle(req, res) {
-    const { id, name, taskDescription, correctAnswer } = req.body;
-
-    console.log("id:", id);
-    console.log("name:", name);
-    console.log("taskDescription:", taskDescription);
-    console.log("correctAnswer:", correctAnswer);
-
-    const newRiddle = await updateRiddleById(id, { name, correctAnswer, taskDescription });
-    res.json({ message: "Riddle updated" });
+    try{
+        const { id, name, taskDescription, correctAnswer } = req.body;
+        console.log("id:", id);
+        console.log("name:", name);
+        console.log("taskDescription:", taskDescription);
+        console.log("correctAnswer:", correctAnswer);
+        const newRiddle = await updateRiddleById(id, { name, correctAnswer, taskDescription });
+        // חשד אולי יש כאן בעיה 
+        res.json({ message: "Riddle updated" });
+    }catch(e){
+        res.status(500).json({ msg: "server error. please try again later." })
+    }
 }

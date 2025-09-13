@@ -1,9 +1,12 @@
 import { connect } from "../config/mongo.config.js"
 import { ObjectId } from "mongodb";
-const db = await connect()
 
 export async function fetchAllRiddles() {
     try {
+        const db = await connect();
+        if (!db) {
+            throw new Error("Database connection failed");
+        }
         const data = await db.collection("riddles").find().toArray()
         console.log(data);
         return data
@@ -15,6 +18,10 @@ export async function fetchAllRiddles() {
 
 export async function createRiddle(riddle) {
     try {
+        const db = await connect();
+        if (!db) {
+            throw new Error("Database connection failed");
+        }
         const result = await db.collection("riddles").insertOne(riddle);
         return result.insertedId;
     } catch (err) {
@@ -25,6 +32,10 @@ export async function createRiddle(riddle) {
 
 export async function deleteRiddleByQuestion(riddleToDelete) {
     try {
+        const db = await connect();
+        if (!db) {
+            throw new Error("Database connection failed");
+        }
         const result = await db.collection("riddles").deleteOne({ taskDescription: riddleToDelete });
         if (result.deletedCount === 0) {
             throw new Error("the riddle not found");
@@ -38,6 +49,10 @@ export async function deleteRiddleByQuestion(riddleToDelete) {
 
 export async function updateRiddleById(id, newRiddle) {
     try {
+        const db = await connect();
+        if (!db) {
+            throw new Error("Database connection failed");
+        }
         const result = await db.collection("riddles").updateOne(
             { _id: new ObjectId(id) },
             { $set: newRiddle }
