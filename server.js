@@ -4,14 +4,17 @@ import configRoutes from "./routes/configRoutes.js";
 import toPlayers from "./routes/players.routes.js";
 import sequelize from './config/db.config.js';
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from 'url';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 const server = express();
-
 server.use(cors());
 server.use(express.json());
-
 configRoutes(server);
 
 try {
